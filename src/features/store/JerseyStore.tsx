@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState, type FormEvent } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ReactNode } from "react";
 import {
   ArrowDown,
   ArrowRight,
@@ -30,7 +30,7 @@ import { categories, jerseyImages, products, testimonials, type Product } from "
 
 const instagramUrl = "https://www.instagram.com/_indrajit_das_?stkn=Z2o2eWRjbWt4cmx4";
 
-function Reveal({ children, className = "" }: { children: React.ReactNode; className?: string }) {
+function Reveal({ children, className = "" }: { children: ReactNode; className?: string }) {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
 
