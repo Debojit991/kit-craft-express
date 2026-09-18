@@ -252,6 +252,7 @@ function ProductGrid({ onSelect }: { onSelect: (product: Product) => void }) {
 function QuickView({ product, onClose }: { product: Product | null; onClose: () => void }) {
   const [size, setSize] = useState("M");
   const [slide, setSlide] = useState(0);
+  const touchStart = useRef<number | null>(null);
   const gallery = product ? [product.image, jerseyImages.volt, jerseyImages.retro] : [];
 
   useEffect(() => { setSlide(0); setSize("M"); }, [product]);
@@ -261,7 +262,19 @@ function QuickView({ product, onClose }: { product: Product | null; onClose: () 
     <Drawer open={Boolean(product)} onOpenChange={(open) => { if (!open) onClose(); }}>
       <DrawerContent className="quick-drawer">
         <div className="quick-inner">
-          <div className="quick-gallery">
+          <div
+            className="quick-gallery"
+            onTouchStart={(event) => { touchStart.current = event.touches[0]?.clientX ?? null; }}
+            onTouchEnd={(event) => {
+              const start = touchStart.current;
+              const end = event.changedTouches[0]?.clientX;
+              if (start === null || end === undefined) return;
+              const distance = end - start;
+              if (distance < -45) setSlide((value) => Math.min(gallery.length - 1, value + 1));
+              if (distance > 45) setSlide((value) => Math.max(0, value - 1));
+              touchStart.current = null;
+            }}
+          >
             <div className="quick-gallery-track" style={{ transform: `translate3d(-${slide * 100}%, 0, 0)` }}>
               {gallery.map((image, index) => <SmartImage key={`${image}-${index}`} src={image} alt={`${product.name} view ${index + 1}`} sizes="(max-width: 767px) 100vw, 50vw" eager={index === 0} />)}
             </div>
@@ -276,7 +289,7 @@ function QuickView({ product, onClose }: { product: Product | null; onClose: () 
             <DrawerDescription>Breathable performance knit with a clean athletic fit. Personalise it your way.</DrawerDescription>
             <p className="quick-price">₹{product.price.toLocaleString("en-IN")}</p>
             <fieldset className="size-picker"><legend>Choose size <a href="#size-guide">Size guide</a></legend><div>{["S", "M", "L", "XL", "XXL"].map((item) => <button key={item} className={size === item ? "is-active" : ""} onClick={() => setSize(item)}>{item}</button>)}</div></fieldset>
-            <div className="personal-fields"><Input aria-label="Custom name" maxLength={12} placeholder="NAME (optional)" /><Input aria-label="Custom number" inputMode="numeric" maxLength={2} placeholder="NO. (optional)" /></div>
+            <div className="personal-fields"><Input aria-label="Custom name" maxLength={12} placeholder="NAME (OPTIONAL)" /><Input aria-label="Custom number" inputMode="numeric" maxLength={2} placeholder="NUMBER" /></div>
             <Button variant="hero" size="xl" className="add-button" onClick={() => toast.success(`${product.name} added in size ${size}`, { icon: <Check /> })}>Add to bag <span>₹{product.price.toLocaleString("en-IN")}</span></Button>
           </div>
         </div>

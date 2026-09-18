@@ -233,7 +233,7 @@
 
 .quick-drawer { max-height: 94dvh; overflow-y: auto; border-color: var(--border); background: var(--background); }
 .quick-inner { display: grid; min-width: 0; }
-.quick-gallery { position: relative; aspect-ratio: 4/3; overflow: hidden; background: oklch(0.16 0.006 85); }
+.quick-gallery { position: relative; aspect-ratio: 4/3; overflow: hidden; background: oklch(0.16 0.006 85); touch-action: pan-y; }
 .quick-gallery-track { display: flex; width: 100%; height: 100%; transition: transform .45s cubic-bezier(.16,1,.3,1); }
 .quick-gallery-track .image-shell { min-width: 100%; }
 .gallery-dots { position: absolute; z-index: 3; bottom: 12px; left: 50%; display: flex; transform: translateX(-50%); gap: 8px; }
@@ -250,7 +250,7 @@
 .size-picker > div { display: grid; grid-template-columns: repeat(5,minmax(0,1fr)); gap: 6px; margin-top: 10px; }
 .size-picker button { min-height: 44px; border: 1px solid var(--border); background: transparent; font-weight: 700; cursor: pointer; }
 .size-picker button.is-active { border-color: var(--foreground); background: var(--foreground); color: var(--background); }
-.personal-fields { display: grid; grid-template-columns: minmax(0,2fr) minmax(80px,1fr); gap: 8px; margin-top: 16px; }
+.personal-fields { display: grid; grid-template-columns: minmax(0,1.6fr) minmax(104px,1fr); gap: 8px; margin-top: 16px; }
 .personal-fields input, .custom-inputs input, .cta-band input { min-height: 52px; border-radius: 0; }
 .add-button { width: 100%; justify-content: space-between; margin-top: 10px; }
 
